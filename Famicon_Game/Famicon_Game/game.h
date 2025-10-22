@@ -22,6 +22,5 @@ public:
 	void Draw();//•`‰æˆ—
 
 	int tileImage;
-	void DrawMap();
 	void UpdateScroll();
 };
