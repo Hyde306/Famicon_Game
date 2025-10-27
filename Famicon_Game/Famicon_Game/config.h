@@ -10,5 +10,5 @@ constexpr int WINDOW_HEIGHT = TILE_SIZE * MAP_HEIGHT; // 896px
 // ÉvÉåÉCÉÑÅ[èÓïÒ
 constexpr int FRAME_WIDTH = 64;
 constexpr int FRAME_HEIGHT = 64;
-constexpr int FRAME_INTERVAL = 4;
+constexpr int FRAME_INTERVAL = 5;
 constexpr int MOVE_INTERVAL = 2;

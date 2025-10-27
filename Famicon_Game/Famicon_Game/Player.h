@@ -1,24 +1,35 @@
-//Player.h
-#pragma once
-#include "DxLib.h"
+﻿#pragma once
+#include"DxLib.h"
 #include "config.h"
 
-enum Direction { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN };
+// Player.h の上部などに追加
+enum Direction {
+    DIR_UP,
+    DIR_DOWN,
+    DIR_LEFT,
+    DIR_RIGHT
+};
 
-class Player {
-private:
-    int mapX, mapY;
-    float centerX, centerY;
-    int dir;
-    int moveDir;
-    int image;
-    int currentFrame;
-    int frameTimer;
-
+class Player
+{
 public:
     void Init();
     void Update(int map[MAP_HEIGHT][MAP_WIDTH]);
     void Draw(float scrollX);
     int GetMapX() const;
     int GetMapY() const;
+
+    // 🔽 これを追加！
+    float GetCenterX() const { return centerX; }
+    float GetWorldX() const;
+    float GetWorldY() const;
+
+private:
+    int mapX, mapY;
+    float centerX, centerY;
+    int currentFrame;
+    int frameTimer;
+    int dir;
+    int moveDir;
+    int image;
 };

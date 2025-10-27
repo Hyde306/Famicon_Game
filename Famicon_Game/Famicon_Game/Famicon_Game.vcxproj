@@ -154,9 +154,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="3D_function.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="2D_function.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="library_function.h" />
@@ -171,8 +173,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3D_function.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="2D_function.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="library_function.cpp" />
     <ClCompile Include="main.cpp" />

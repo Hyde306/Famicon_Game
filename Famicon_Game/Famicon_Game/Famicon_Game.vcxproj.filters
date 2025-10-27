@@ -74,6 +74,12 @@
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>ヘッダー ファイル\オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>ヘッダー ファイル\オブジェクト</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -98,6 +104,12 @@
       <Filter>ソース ファイル\オブジェクト</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>ソース ファイル\オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
       <Filter>ソース ファイル\オブジェクト</Filter>
     </ClCompile>
   </ItemGroup>

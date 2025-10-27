@@ -1,6 +1,9 @@
 #include "Player.h"
 #include "config.h"
 #include <cmath>
+#include "Bomb.h"
+
+extern Bomb bomb;
 
 bool CanMove(float centerX, float centerY, int map[MAP_HEIGHT][MAP_WIDTH]) {
     const int COLLISION_WIDTH = 60;
@@ -71,6 +74,26 @@ void Player::Update(int map[MAP_HEIGHT][MAP_WIDTH]) {
     else {
         currentFrame = 1;
     }
+
+    // --- ボム設置 ---
+    if (CheckHitKey(KEY_INPUT_SPACE)) {
+        if (!bomb.active) {
+            bomb.active = true;
+
+            // --- タイル位置 ---
+            bomb.mapX = mapX;
+            bomb.mapY = mapY;
+
+            // --- プレイヤーの現在位置をワールド座標で記録 ---
+            bomb.worldX = mapX * TILE_SIZE;
+            bomb.worldY = mapY * TILE_SIZE;
+
+            bomb.timer = 180;
+            bomb.currentFrame = 0;
+            bomb.frameTimer = 0;
+        }
+    }
+
 }
 
 void Player::Draw(float scrollX) {
@@ -107,3 +130,5 @@ void Player::Draw(float scrollX) {
 
 int Player::GetMapX() const { return mapX; }
 int Player::GetMapY() const { return mapY; }
+float Player::GetWorldX() const { return centerX - TILE_SIZE / 2; }
+float Player::GetWorldY() const { return centerY - TILE_SIZE / 2; }
