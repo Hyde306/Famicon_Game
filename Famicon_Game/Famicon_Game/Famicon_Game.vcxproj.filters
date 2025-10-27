@@ -80,6 +80,9 @@
     <ClInclude Include="Explosion.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
+    <ClInclude Include="BreakEffect.h">
+      <Filter>ヘッダー ファイル\オブジェクト</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

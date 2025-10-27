@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Bomb.h"
 #include "Explosion.h"
+#include "BreakEffect.h"
 
 // ======================================
 // グローバル変数
@@ -19,6 +20,9 @@ Explosion explosions[9];   // 中心＋上下左右＋中間
 
 int bombImg;
 int explosionImg;
+
+BreakEffect breakEffects[16]; // 最大16個くらい同時発生可能
+int breakImg; // 破壊エフェクト画像
 
 // ======================================
 // コンストラクタ
@@ -130,8 +134,21 @@ int CGame::Update()
 
                     // 壊せるブロック → ブロック破壊して爆風もそこで止める
                     if (map[ny][nx] == 2) {
+                        // 壊れエフェクトを出す
+                        for (int e = 0; e < 16; e++) {
+                            if (!breakEffects[e].active) {
+                                breakEffects[e].active = true;
+                                breakEffects[e].worldX = nx * TILE_SIZE;
+                                breakEffects[e].worldY = ny * TILE_SIZE;
+                                breakEffects[e].timer = 30;        // 表示時間
+                                breakEffects[e].frameTimer = 0;
+                                breakEffects[e].currentFrame = 0;
+                                break;
+                            }
+                        }
+
+                        // ブロック破壊
                         map[ny][nx] = 0;
-                        // ここに破壊エフェクトを後で追加可
                         break;
                     }
 
@@ -171,6 +188,23 @@ int CGame::Update()
         if (explosions[i].timer <= 0)
             explosions[i].active = false;
     }
+
+    for (int i = 0; i < 16; i++) {
+        if (!breakEffects[i].active) continue;
+
+        breakEffects[i].timer--;
+        breakEffects[i].frameTimer++;
+
+        // 6フレームごとに次のコマへ（6枚アニメ）
+        if (breakEffects[i].frameTimer >= 6) {
+            breakEffects[i].frameTimer = 0;
+            breakEffects[i].currentFrame++;
+        }
+
+        if (breakEffects[i].timer <= 0 || breakEffects[i].currentFrame >= 6)
+            breakEffects[i].active = false;
+    }
+
 
     // -------------------------------------------------------
     // 既存のオブジェクト処理（敵など）
@@ -261,6 +295,32 @@ void DrawExplosion()
     }
 }
 
+void DrawBreakEffects(float scrollX)
+{
+    const int frameWidth = 575 / 6;   // 1コマあたりの幅 ≒ 95〜96px
+    const int frameHeight = 96;       // 高さ
+
+    for (int i = 0; i < 16; i++) {
+        if (!breakEffects[i].active) continue;
+
+        int frame = breakEffects[i].currentFrame;
+        if (frame > 5) frame = 5; // 全6コマ
+
+        int srcX = frame * frameWidth;
+        int srcY = 0;
+
+        float drawX = breakEffects[i].worldX - scrollX;
+        float drawY = breakEffects[i].worldY;
+
+        DrawRectExtendGraph(
+            (int)drawX, (int)drawY,
+            (int)(drawX + TILE_SIZE), (int)(drawY + TILE_SIZE),
+            srcX, srcY, frameWidth, frameHeight,
+            breakImg, TRUE
+        );
+    }
+}
+
 
 // ======================================
 // 描画処理
@@ -269,11 +329,20 @@ void CGame::Draw()
 {
     ClearDrawScreen();
 
+    // === 背景やマップを先に描画 ===
     DrawMap(scrollX);
+
+    // === 爆弾と爆発を描画 ===
     DrawBomb();
     DrawExplosion();
+
+    // === ブロック破壊エフェクトをここで描画 ===
+    DrawBreakEffects(scrollX);  // ← この行を追加！
+
+    // === プレイヤーを最後に描画（手前） ===
     player.Draw(scrollX);
 
+    // === デバッグ情報など ===
     DrawFormatString(0, 0, GetColor(255, 255, 255), "Object_Count = %d", base.size());
 
     for (int i = 0; i < base.size(); i++)
@@ -281,6 +350,7 @@ void CGame::Draw()
 
     ScreenFlip();
 }
+
 
 // ======================================
 CGame::~CGame() {}

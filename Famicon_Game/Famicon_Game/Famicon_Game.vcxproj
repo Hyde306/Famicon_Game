@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="3D_function.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BreakEffect.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="2D_function.h" />
     <ClInclude Include="config.h" />

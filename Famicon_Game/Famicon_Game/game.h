@@ -6,7 +6,6 @@
 class CGame :public CScene
 {
 private:
-	//int scrollX = 0; // スクロール量（ピクセル単位）
 
 public:
 
