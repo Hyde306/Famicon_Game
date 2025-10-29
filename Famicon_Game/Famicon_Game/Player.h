@@ -2,7 +2,6 @@
 #include"DxLib.h"
 #include "config.h"
 
-// Player.h の上部などに追加
 enum Direction {
     DIR_UP,
     DIR_DOWN,
@@ -19,7 +18,6 @@ public:
     int GetMapX() const;
     int GetMapY() const;
 
-    // 🔽 これを追加！
     float GetCenterX() const { return centerX; }
     float GetWorldX() const;
     float GetWorldY() const;
