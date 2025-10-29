@@ -88,12 +88,12 @@ int CGame::Update()
             bomb.currentFrame = (bomb.currentFrame + 1) % 3;
         }
 
-        // 爆発発生
+        // --- 爆発発生 ---
         if (bomb.timer <= 0)
         {
             bomb.active = false;
 
-            int dx[4] = { 0, 0, -1, 1 };
+            int dx[4] = { 0, 0, -1, 1 }; // 上 下 左 右
             int dy[4] = { -1, 1, 0, 0 };
 
             // 中心の爆風
@@ -104,47 +104,48 @@ int CGame::Update()
             explosions[0].currentFrame = 0;
             explosions[0].frameTimer = 0;
 
-            // 各方向へ伸ばす（爆風の長さ＝2）
             int index = 1;
-            for (int dir = 0; dir < 4; dir++) 
+
+            // 各方向へ伸ばす（爆風の長さ＝2）
+            for (int dir = 0; dir < 4; dir++)
             {
                 for (int len = 1; len <= 2; len++)
                 {
                     int nx = bomb.mapX + dx[dir] * len;
                     int ny = bomb.mapY + dy[dir] * len;
 
-                    // 範囲外
+                    // 範囲外なら中断
                     if (nx < 0 || ny < 0 || nx >= MAP_WIDTH || ny >= MAP_HEIGHT)
                         break;
 
-                    // 壊せないブロック → 爆風を止める
+                    // 壊せないブロックなら止める
                     if (map[ny][nx] == 1)
                         break;
 
-                    // 壊せるブロック → ブロック破壊して爆風もそこで止める
-                    if (map[ny][nx] == 2) 
+                    // 壊せるブロックなら破壊して止める
+                    if (map[ny][nx] == 2)
                     {
-                        // 壊れエフェクトを出す
+                        map[ny][nx] = 0;
+
+                        // 壊れエフェクト追加（任意）
                         for (int e = 0; e < 16; e++)
                         {
-                            if (!breakEffects[e].active) 
+                            if (!breakEffects[e].active)
                             {
                                 breakEffects[e].active = true;
                                 breakEffects[e].worldX = nx * TILE_SIZE;
                                 breakEffects[e].worldY = ny * TILE_SIZE;
-                                breakEffects[e].timer = 30;        // 表示時間
+                                breakEffects[e].timer = 30;
                                 breakEffects[e].frameTimer = 0;
                                 breakEffects[e].currentFrame = 0;
                                 break;
                             }
                         }
 
-                        // ブロック破壊
-                        map[ny][nx] = 0;
-                        break;
+                        break; 
                     }
 
-                    // 通過できるマス → 爆風を生成
+                    // 通常の空地に爆風を生成
                     explosions[index].active = true;
                     explosions[index].mapX = nx;
                     explosions[index].mapY = ny;
@@ -155,6 +156,7 @@ int CGame::Update()
                 }
             }
         }
+
     }
 
     // 爆風アニメ進行
