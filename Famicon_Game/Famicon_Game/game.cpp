@@ -11,7 +11,6 @@
 
 // グローバル変数
 Player player;
-float scrollX = 0.0f;
 
 Bomb bomb;
 Explosion explosions[9];   // 中心＋上下左右＋中間
@@ -216,19 +215,18 @@ int CGame::Update()
 // スクロール制御
 void CGame::UpdateScroll()
 {
+    float playerCenter = player.GetCenterX();
     float targetScrollX = player.GetCenterX() - (WINDOW_WIDTH / 2.0f);
     scrollX += (targetScrollX - scrollX) * 0.2f;
-
     float maxScroll = MAP_WIDTH * TILE_SIZE - WINDOW_WIDTH;
     if (scrollX < 0) scrollX = 0;
     if (scrollX > maxScroll) scrollX = maxScroll;
+
 }
 
 // 爆弾描画
-void DrawBomb()
+void CGame::DrawBomb()
 {
-    extern float scrollX;
-
     if (!bomb.active) return;
 
     int frameWidth = 814 / 3;
@@ -236,27 +234,22 @@ void DrawBomb()
     int srcX = bomb.currentFrame * frameWidth;
     int srcY = 0;
 
-    // world座標はマップ上の絶対位置
-    float screenX = bomb.worldX - scrollX;
-    float screenY = bomb.worldY;
+    float drawX = bomb.mapX * TILE_SIZE - scrollX;  // ← this->scrollX でOK
+    float drawY = bomb.mapY * TILE_SIZE;
 
     DrawRectExtendGraph(
-        (int)screenX,
-        (int)screenY,
-        (int)(screenX + TILE_SIZE),
-        (int)(screenY + TILE_SIZE),
+        (int)drawX,
+        (int)drawY,
+        (int)(drawX + TILE_SIZE),
+        (int)(drawY + TILE_SIZE),
         srcX, srcY, frameWidth, frameHeight,
         bombImg, TRUE
     );
-
-    DrawFormatString(10, 50, GetColor(255, 255, 0),
-        "worldX=%.1f scrollX=%.1f drawX=%.1f",
-        bomb.worldX, scrollX, bomb.worldX - scrollX);
-
 }
 
+
 // 爆発描画
-void DrawExplosion()
+void CGame::DrawExplosion()
 {
     const int frameWidth = 128;
     const int frameHeight = 128;

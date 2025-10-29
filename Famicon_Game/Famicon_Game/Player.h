@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include"DxLib.h"
+#include "DxLib.h"
 #include "config.h"
 
 enum Direction {
@@ -15,12 +15,14 @@ public:
     void Init();
     void Update(int map[MAP_HEIGHT][MAP_WIDTH]);
     void Draw(float scrollX);
+
     int GetMapX() const;
     int GetMapY() const;
 
-    float GetCenterX() const { return centerX; }
     float GetWorldX() const;
     float GetWorldY() const;
+    float GetCenterX() const;  // ← 宣言だけ！
+    float GetCenterY() const;  // ← 宣言だけ！
 
 private:
     int mapX, mapY;

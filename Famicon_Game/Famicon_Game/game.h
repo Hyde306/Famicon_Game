@@ -22,6 +22,7 @@ public:
 
 	int tileImage;
 	void UpdateScroll();
-
+	void DrawBomb();
+	void DrawExplosion();
 	float scrollX = 0.0f;
 };

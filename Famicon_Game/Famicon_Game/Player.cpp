@@ -139,6 +139,15 @@ void Player::Draw(float scrollX)
     DrawRectGraph(x, y, srcX, srcY, FRAME_WIDTH, FRAME_HEIGHT, image, TRUE);
 }
 
+float Player::GetCenterX() const
+{
+    return centerX;
+}
+
+float Player::GetCenterY() const
+{
+    return centerY;
+}
 
 int Player::GetMapX() const { return mapX; }
 int Player::GetMapY() const { return mapY; }
